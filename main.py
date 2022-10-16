@@ -75,7 +75,8 @@ async def on_vc_end(member, channel):
     await client.get_channel(int(chid)).send(msg)
 
 @bot.slash_command(guild_ids=[843868374919282718])
-async def ping(ctx):
-    await ctx.respond('pong')
+async def engo(ctx, name: str = None):
+    name = name or ctx.author.name
+    await ctx.respond(f"{name}を援護！")
 
 client.run(DISCORD_BOT_TOKEN)
