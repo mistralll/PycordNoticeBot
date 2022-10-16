@@ -1,0 +1,23 @@
+                            miyagikeita@miyagikeitanoMacBook-Air PycordNoticeBot % python3 main.py
+listening...
+
+
+check: vc end  ##################
+member
+miyagi#0749
+before
+<VoiceState self_mute=False self_deaf=False self_stream=False suppress=False requested_to_speak_at=None channel=<VoiceChannel id=843868374919282722 name='雑談' rtc_region=None position=0 bitrate=64000 video_quality_mode=<VideoQualityMode.auto: 1> user_limit=0 category_id=843868374919282720>>
+after
+<VoiceState self_mute=False self_deaf=False self_stream=False suppress=False requested_to_speak_at=None channel=None>
+雑談の通話は終了しました。
+
+
+
+check: vc start  ################
+member
+miyagi#0749
+before
+<VoiceState self_mute=False self_deaf=False self_stream=False suppress=False requested_to_speak_at=None channel=None>
+after
+<VoiceState self_mute=False self_deaf=False self_stream=False suppress=False requested_to_speak_at=None channel=<VoiceChannel id=843868374919282722 name='雑談' rtc_region=None position=0 bitrate=64000 video_quality_mode=<VideoQualityMode.auto: 1> user_limit=0 category_id=843868374919282720>>
+miyagiが雑談に来たようです！
