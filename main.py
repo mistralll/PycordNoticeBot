@@ -31,7 +31,8 @@ async def on_message(message):
     if msg == "bang":
         resp = "kok"
     
-    await message.channel.send(resp)
+    if resp != "":
+        await message.channel.send(resp)
     
 @bot.event
 async def on_ready():
