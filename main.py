@@ -62,7 +62,7 @@ async def on_voice_state_update(member, before, after):
 
 @bot.event # 通話開始
 async def on_vc_start(member, channel):
-    emb = discord.Embed(title=f"{channel.name} で通話が開始されました!", description=f"{member.display_name}")
+    emb = discord.Embed(title=f"{channel.name} で通話が開始されました！", description=f"{member.display_name}")
 
     chid = NOTICE_CH_ID
 
@@ -78,7 +78,7 @@ async def on_vc_start(member, channel):
 async def on_vc_many(member, channel):
     cnt = len(bot.get_channel(channel.id).voice_states.keys())
 
-    emb = discord.Embed(title=f"{channel.name} に {cnt}人目の参加者がきました!", description=f"来た人: {member.display_name}")
+    emb = discord.Embed(title=f"{channel.name} に {cnt}人目の参加者がきました！", description=f"来た人: {member.display_name}")
 
     chid = NOTICE_CH_ID
 
