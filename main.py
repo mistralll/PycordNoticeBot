@@ -86,4 +86,8 @@ async def on_vc_end(member, channel):
     
     await bot.get_channel(int(chid)).send(msg)
 
+@bot.slash_command()
+async def engo(ctx, user : discord.User):
+    await ctx.respond(f"{user.name}を援護！")
+
 bot.run(DISCORD_BOT_TOKEN)
