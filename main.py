@@ -23,16 +23,20 @@ bot = discord.Bot()
 @bot.event
 async def on_message(message):
     msg = message.content
-    resp = ""
+    print("on_message: " + msg + " (" + message.channel.name + ")")
+    res = ""
+
     if msg == "ping":
-        resp = "pong"
+        res = "pong"
     if msg == "hong":
-        resp = "kong"
+        res = "kong"
     if msg == "bang":
-        resp = "kok"
+        res = "kok"
+    if msg == "にゃが":
+        res = "にゃがにゃが"
     
-    if resp != "":
-        await message.channel.send(resp)
+    if res != "":
+        await message.channel.send(res)
     
 @bot.event
 async def on_ready():
