@@ -22,7 +22,7 @@ bot = discord.Bot(intents = intents)
 
 @bot.event
 async def on_message(message):
-    if message.author == bot.user:
+    if message.author.bot:
         return
 
     msg = message.content
@@ -34,6 +34,9 @@ async def on_message(message):
         res = "kong"
     if msg == "bang":
         res = "kok"
+    if msg == "溜めて":
+        res = "解放"
+
     if msg.count("にゃが") > 0:
         cnt = msg.count("にゃが")
         res = "にゃが"
