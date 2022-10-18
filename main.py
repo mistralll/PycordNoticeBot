@@ -40,7 +40,7 @@ async def on_message(message):
 async def on_ready():
     print("listening...")
 
-@bot.event
+@bot.event # 通話検知
 async def on_voice_state_update(member, before, after):
     if after.channel is not None: # Start検知
         id = after.channel.id
@@ -49,6 +49,8 @@ async def on_voice_state_update(member, before, after):
 
         if cnt == 1: # 通話が開始された
             bot.dispatch("vc_start",member,after.channel)
+        if cnt > 3: # 大人数参加
+            bot.dispatch("vc_many", after.channel)
 
     if before.channel is not None: # End判定
         id = before.channel.id
@@ -56,9 +58,9 @@ async def on_voice_state_update(member, before, after):
         cnt = len(ch.voice_states.keys())
         
         if cnt == 0: # 通話が終了した
-            bot.dispatch("vc_end",member,before.channel)
+            bot.dispatch("vc_end",before.channel)
 
-@bot.event
+@bot.event # 通話開始
 async def on_vc_start(member, channel):
     msg = f"{member.display_name}が{channel.name}に来たようです！"
     print(msg)
@@ -72,8 +74,25 @@ async def on_vc_start(member, channel):
     
     await bot.get_channel(int(chid)).send(msg)
 
+@bot.event # 大人数参加
+async def on_vc_many(channel):
+    ch = bot.get_channel(channel.id)
+    cnt = len(ch.voice_states.keys())
+
+    msg = f"{channel.name}に{cnt}人目が参加しました！"
+    print(msg)
+
+    chid = NOTICE_CH_ID
+
+    if str(channel.id) == str(UNITE_VC_ID): # UNITE部
+        chid = UNITE_TX_ID
+    if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
+        chid = GENSHIN_TX_ID
+    
+    await bot.get_channel(int(chid)).send(msg)
+
 @bot.event
-async def on_vc_end(member, channel):
+async def on_vc_end(channel):
     msg = f"{channel.name}の通話は終了しました。"
     print(msg)
 
