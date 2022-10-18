@@ -22,9 +22,17 @@ bot = discord.Bot()
 
 @bot.event
 async def on_message(message):
-    if message.content == "ping":
-        await message.channel.send("pong")
-
+    msg = message.content
+    resp = ""
+    if msg == "ping":
+        resp = "pong"
+    if msg == "hong":
+        resp = "kong"
+    if msg == "bang":
+        resp = "kok"
+    
+    await message.channel.send(resp)
+    
 @bot.event
 async def on_ready():
     print("listening...")
