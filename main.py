@@ -17,8 +17,8 @@ import discord
 
 intents=discord.Intents.all() # after
 
-client = discord.Client()
-bot = discord.Bot()
+# client = discord.Client()
+bot = discord.Bot(intents = intents)
 
 @bot.event
 async def on_message(message):
