@@ -1,5 +1,6 @@
 from lib2to3.pgen2 import token
 import os
+from pydoc import describe
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -107,9 +108,9 @@ async def on_vc_end(channel):
     print(f"通話終了: {channel.name}")
     await bot.get_channel(int(chid)).send(embed=emb)
 
-@bot.slash_command()
+@bot.slash_command(description="指定のユーザーに援護ピンを立てます。")
 async def engo(ctx, user : discord.User):
-    msg = f"{user.name}を援護！"
+    msg = f"{user.mention}を援護！"
     print(msg)
     await ctx.respond(msg)
 
