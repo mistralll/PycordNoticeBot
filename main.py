@@ -42,23 +42,22 @@ async def on_ready():
 
 @bot.event # 通話検知
 async def on_voice_state_update(member, before, after):
-
-    bf_ch = None
-    af_ch = None
     bf_cnt = -1
     af_cnt = -1
 
     if before.channel is not None:
-        bf_ch = bot.get_channel(before.channel.id)
-        bf_cnt = len(bf_ch.voice_states.keys())
+        bf_cnt = len(before.channel.voice_states.keys())
     if after.channel is not None:
-        af_ch = bot.get_channel(after.channel.id)
-        af_cnt = len(af_ch.voice_states.keys())
+        af_cnt = len(after.channel.voice_states.keys())
+
+    is_different_ch = True # voice state update の前後で参加チャンネルが異なる
+    if bf_cnt != -1 and af_cnt != -1:
+        is_different_ch = (before.channel.id != after.channel.id)
     
     if af_cnt != -1:
         if af_cnt == 1: # 通話開始
             bot.dispatch("vc_start", member, after.channel)
-        if af_cnt > 2 and bf_ch != af_ch: # 大人数参加
+        if af_cnt > 2 and is_different_ch: # 大人数参加
             bot.dispatch("vc_many", member, after.channel)
     
     if bf_cnt == 0: # 通話終了
