@@ -17,13 +17,11 @@ import discord
 
 intents=discord.Intents.all() # after
 
-# client = discord.Client()
 bot = discord.Bot(intents = intents)
 
 @bot.event
 async def on_message(message):
     msg = message.content
-    print("on_message: " + message.content + " (" + message.channel.name + ")")
     res = ""
 
     if msg == "ping":
