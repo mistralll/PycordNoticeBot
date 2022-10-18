@@ -48,9 +48,9 @@ async def on_voice_state_update(member, before, after):
         cnt = len(ch.voice_states.keys())
 
         if cnt == 1: # 通話が開始された
-            bot.dispatch("vc_start",member,after.channel)
+            bot.dispatch("vc_start",member, after.channel)
         if cnt > 3: # 大人数参加
-            bot.dispatch("vc_many", after.channel)
+            bot.dispatch("vc_many",member, after.channel)
 
     if before.channel is not None: # End判定
         id = before.channel.id
@@ -62,8 +62,7 @@ async def on_voice_state_update(member, before, after):
 
 @bot.event # 通話開始
 async def on_vc_start(member, channel):
-    msg = f"{member.display_name}が{channel.name}に来たようです！"
-    print(msg)
+    emb = discord.Embed(title=f"{channel.name} で通話が開始されました!", description=f"{member.display_name}")
 
     chid = NOTICE_CH_ID
 
@@ -72,15 +71,14 @@ async def on_vc_start(member, channel):
     if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
         chid = GENSHIN_TX_ID
     
-    await bot.get_channel(int(chid)).send(msg)
+    print(f"通話開始: {channel.name} {member.display_name}")
+    await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event # 大人数参加
-async def on_vc_many(channel):
-    ch = bot.get_channel(channel.id)
-    cnt = len(ch.voice_states.keys())
+async def on_vc_many(member, channel):
+    cnt = len(bot.get_channel(channel.id).voice_states.keys())
 
-    msg = f"{channel.name}に{cnt}人目が参加しました！"
-    print(msg)
+    emb = discord.Embed(title=f"{channel.name} に {cnt}人目の参加者がきました!", description=f"来た人: {member.display_name}")
 
     chid = NOTICE_CH_ID
 
@@ -89,12 +87,12 @@ async def on_vc_many(channel):
     if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
         chid = GENSHIN_TX_ID
     
-    await bot.get_channel(int(chid)).send(msg)
+    print(f"大人数参加: {channel.name}")
+    await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event
 async def on_vc_end(channel):
-    msg = f"{channel.name}の通話は終了しました。"
-    print(msg)
+    emb = discord.Embed(title=f"{channel.name} の通話は終了しました")
 
     chid = NOTICE_CH_ID
 
@@ -102,8 +100,9 @@ async def on_vc_end(channel):
         chid = UNITE_TX_ID
     if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
         chid = GENSHIN_TX_ID
-    
-    await bot.get_channel(int(chid)).send(msg)
+
+    print(f"通話終了: {channel.name}")
+    await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.slash_command()
 async def engo(ctx, user : discord.User):
