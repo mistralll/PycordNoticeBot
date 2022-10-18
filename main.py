@@ -42,23 +42,27 @@ async def on_ready():
 
 @bot.event # 通話検知
 async def on_voice_state_update(member, before, after):
-    if after.channel is not None: # Start検知
-        id = after.channel.id
-        ch = bot.get_channel(id)
-        cnt = len(ch.voice_states.keys())
 
-        if cnt == 1: # 通話が開始された
-            bot.dispatch("vc_start",member, after.channel)
-        if cnt > 3: # 大人数参加
-            bot.dispatch("vc_many",member, after.channel)
+    bf_ch = None
+    af_ch = None
+    bf_cnt = -1
+    af_cnt = -1
 
-    if before.channel is not None: # End判定
-        id = before.channel.id
-        ch = bot.get_channel(id)
-        cnt = len(ch.voice_states.keys())
-        
-        if cnt == 0: # 通話が終了した
-            bot.dispatch("vc_end",before.channel)
+    if before.channel is not None:
+        bf_ch = bot.get_channel(before.channel.id)
+        bf_cnt = len(bf_ch.voice_states.keys())
+    if after.channel is not None:
+        af_ch = bot.get_channel(after.channel.id)
+        af_cnt = len(af_ch.voice_states.keys())
+    
+    if af_cnt != -1:
+        if af_cnt == 1: # 通話開始
+            bot.dispatch("vc_start", member, after.channel)
+        if af_cnt > 2 and bf_ch != af_ch: # 大人数参加
+            bot.dispatch("vc_many", member, after.channel)
+    
+    if bf_cnt == 0: # 通話終了
+        bot.dispatch("vc_end", before.channel)
 
 @bot.event # 通話開始
 async def on_vc_start(member, channel):
