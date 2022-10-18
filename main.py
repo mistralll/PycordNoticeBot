@@ -23,7 +23,7 @@ bot = discord.Bot()
 @bot.event
 async def on_message(message):
     msg = message.content
-    print("on_message: " + msg + " (" + message.channel.name + ")")
+    print("on_message: " + message.content + " (" + message.channel.name + ")")
     res = ""
 
     if msg == "ping":
