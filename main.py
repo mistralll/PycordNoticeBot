@@ -65,7 +65,7 @@ async def on_voice_state_update(member, before, after):
         is_different_ch = (before.channel.id != after.channel.id)
     
     if af_cnt != -1:
-        if af_cnt == 1: # 通話開始
+        if bf_cnt == -1 and af_cnt == 1: # 通話開始
             bot.dispatch("vc_start", member, after.channel)
         if af_cnt > 3 and is_different_ch: # 大人数参加
             bot.dispatch("vc_many", member, after.channel)
