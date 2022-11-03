@@ -2,9 +2,10 @@ from lib2to3.pgen2 import token
 import os
 from pydoc import describe
 from dotenv import load_dotenv
+import logging
+import discord
 
 load_dotenv()
-
 DISCORD_BOT_TOKEN = os.environ['APP_BOT_TOKEN']
 DISCORD_CLIENT_ID = os.environ['CLIENT_ID']
 NOTICE_CH_ID = int(os.environ['NOTICE_CH_ID'])
@@ -12,12 +13,13 @@ UNITE_TX_ID = int(os.environ['UNITE_TX_ID'])
 UNITE_VC_ID = int(os.environ['UNITE_VC_ID'])
 GENSHIN_TX_ID = int(os.environ['GENSHIN_TX_ID'])
 GENSHIN_VC_ID = int(os.environ['GENSHIN_VC_ID'])
-GUILD_ID = [int(os.environ['GUILD_ID'])]
+GUILD_ID = int(os.environ['GUILD_ID'])
 
-import discord
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-intents=discord.Intents.all() # after
-
+intents = discord.Intents.all()
+intents.members = True
 bot = discord.Bot(intents = intents)
 
 @bot.event
@@ -44,11 +46,12 @@ async def on_message(message):
             res += "にゃが"
 
     if res != "":
+        logger.info(f"PingPong: {res}")
         await message.channel.send(res)
     
 @bot.event
 async def on_ready():
-    print("listening...")
+    logger.info("Listening...")
 
 @bot.event # 通話検知
 async def on_voice_state_update(member, before, after):
@@ -59,6 +62,8 @@ async def on_voice_state_update(member, before, after):
         bf_cnt = len(before.channel.voice_states.keys())
     if after.channel is not None:
         af_cnt = len(after.channel.voice_states.keys())
+
+    logger.info(f"VC_Update: before {bf_cnt} -> after {af_cnt}")
 
     is_different_ch = True # voice state update の前後で参加チャンネルが異なる
     if bf_cnt != -1 and af_cnt != -1:
@@ -84,7 +89,7 @@ async def on_vc_start(member, channel):
     if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
         chid = GENSHIN_TX_ID
     
-    print(f"通話開始: {channel.name} {member.display_name}")
+    logger.info(f"VC_Start: {channel.name} is started.")
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event # 大人数参加
@@ -100,7 +105,7 @@ async def on_vc_many(member, channel):
     if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
         chid = GENSHIN_TX_ID
     
-    print(f"大人数参加: {channel.name}")
+    logger.info(f"VC_Many: {member.display_name} is join to {channel.name}.")
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event
@@ -114,13 +119,13 @@ async def on_vc_end(channel):
     if str(channel.id) == str(GENSHIN_VC_ID): # 原神部
         chid = GENSHIN_TX_ID
 
-    print(f"通話終了: {channel.name}")
+    print(f"VC_End: {channel.name} is ended.")
     await bot.get_channel(int(chid)).send(embed=emb)
 
-@bot.slash_command(description="指定のユーザーに援護ピンを立てます。")
+@bot.slash_command(guild_ids=[GUILD_ID], description="指定のユーザーに援護ピンを立てます。")
 async def engo(ctx, user : discord.User):
     msg = f"{user.mention}を援護！"
-    print(msg)
+    logger.info(f"Slash_Engo: {msg}")
     await ctx.respond(msg)
 
 bot.run(DISCORD_BOT_TOKEN)
