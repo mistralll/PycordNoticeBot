@@ -34,7 +34,7 @@ async def on_ready():
 
 @bot.event # 通話検知
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
-    op = vc_funcs.detect_operation(member, before, after)
+    op = vc_funcs.detect_operation(before, after)
     if op == "start":
         bot.dispatch("vc_start", member, after.channel)
     if op == "end":
