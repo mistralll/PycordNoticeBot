@@ -1,10 +1,12 @@
-from lib2to3.pgen2 import token
-import os
-from pydoc import describe
-from dotenv import load_dotenv
-import logging
-import discord
+import init
 
+# Prepare discord instance
+import discord
+bot = discord.Bot(intents = init.intents)
+
+# Prepare env variable
+import os
+from dotenv import load_dotenv
 load_dotenv()
 DISCORD_BOT_TOKEN = os.environ['APP_BOT_TOKEN']
 DISCORD_CLIENT_ID = os.environ['CLIENT_ID']
@@ -15,12 +17,10 @@ GENSHIN_TX_ID = int(os.environ['GENSHIN_TX_ID'])
 GENSHIN_VC_ID = int(os.environ['GENSHIN_VC_ID'])
 GUILD_ID = int(os.environ['GUILD_ID'])
 
+# Prepare logger
+import logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
-
-intents = discord.Intents.all()
-intents.members = True
-bot = discord.Bot(intents = intents)
 
 @bot.event
 async def on_message(message):
