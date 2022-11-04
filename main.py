@@ -63,7 +63,7 @@ async def on_voice_state_update(member, before, after):
     if after.channel is not None:
         af_cnt = len(after.channel.voice_states.keys())
 
-    logger.info(f"VC_Update: before {bf_cnt} -> after {af_cnt}")
+    logger.info(f"VC_Update: {member.display_name} before {bf_cnt} -> after {af_cnt}")
 
     is_different_ch = True # voice state update の前後で参加チャンネルが異なる
     if bf_cnt != -1 and af_cnt != -1:
