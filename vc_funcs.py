@@ -17,7 +17,7 @@ def count_people(vc: discord.VoiceChannel):
 
 def detect_operation(bf:discord.VoiceState, af:discord.VoiceState):
     # When voice state is updated, then return next operation.
-    # Return is "start", "end" or "many" normally.
+    # Return "start", "end" or "many" normally.
     # Return -1 when error happen.
     bf_cnt = count_people(bf.channel)
     af_cnt = count_people(af.channel)
