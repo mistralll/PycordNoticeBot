@@ -43,24 +43,24 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         bot.dispatch("vc_many", member, after.channel)
 
 @bot.event # 通話開始
-async def on_vc_start(member: discord.Member, channel: discord.channel):
-    logger.info(f"VC_Start: {channel.name} is started.")
-    emb = discord.Embed(title=f"{channel.name} で通話が開始されました！", description=f"{member.display_name}")
-    chid = vc_funcs.detect_ch_id(channel.id)
+async def on_vc_start(mem: discord.Member, ch: discord.channel):
+    logger.info(f"VC_Start: {ch.name} is started.")
+    emb = discord.Embed(title=f"{ch.name} で通話が開始されました！", description=f"{mem.display_name}")
+    chid = vc_funcs.detect_ch_id(ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event # 大人数参加
-async def on_vc_many(member: discord.Member, channel: discord.channel):
-    logger.info(f"VC_Many: {member.display_name} is join to {channel.name}.")
-    emb = discord.Embed(title=f"{channel.name} に {vc_funcs.count_people(channel)}人目の参加者がきました！", description=f"来た人: {member.display_name}")
-    chid = vc_funcs.detect_ch_id(channel.id)
+async def on_vc_many(mem: discord.Member, ch: discord.channel):
+    logger.info(f"VC_Many: {mem.display_name} is join to {ch.name}.")
+    emb = discord.Embed(title=f"{ch.name} に {vc_funcs.count_people(ch)}人目の参加者がきました！", description=f"来た人: {mem.display_name}")
+    chid = vc_funcs.detect_ch_id(ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event # 通話終了
-async def on_vc_end(channel: discord.channel):
-    logger.info(f"VC_End: {channel.name} is ended.")
-    emb = discord.Embed(title=f"{channel.name} の通話は終了しました")
-    chid = vc_funcs.detect_ch_id(channel.id)
+async def on_vc_end(ch: discord.channel):
+    logger.info(f"VC_End: {ch.name} is ended.")
+    emb = discord.Embed(title=f"{ch.name} の通話は終了しました")
+    chid = vc_funcs.detect_ch_id(ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.slash_command(guild_ids=[GUILD_ID], description="指定のユーザーに援護ピンを立てます。") # 援護ピン
