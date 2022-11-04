@@ -15,7 +15,7 @@ def count_people(vc: discord.VoiceChannel):
     if vc == None: return -1
     return len(vc.voice_states.keys())
 
-def detect_operation(mem: discord.Member, bf:discord.VoiceState, af:discord.VoiceState):
+def detect_operation(bf:discord.VoiceState, af:discord.VoiceState):
     bf_cnt = count_people(bf.channel)
     af_cnt = count_people(af.channel)
 
