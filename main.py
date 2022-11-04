@@ -1,4 +1,5 @@
 import init
+import ping_pong
 
 # Prepare discord instance
 import discord
@@ -27,24 +28,7 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    msg = message.content
-    res = ""
-
-    if msg == "ping":
-        res = "pong"
-    if msg == "hong":
-        res = "kong"
-    if msg == "bang":
-        res = "kok"
-    if msg == "溜めて":
-        res = "解放"
-
-    if msg.count("にゃが") > 0:
-        cnt = msg.count("にゃが")
-        res = "にゃが"
-        for _ in range(cnt):
-            res += "にゃが"
-
+    res = ping_pong.make_res(message.content)
     if res != "":
         logger.info(f"PingPong: {res}")
         await message.channel.send(res)
