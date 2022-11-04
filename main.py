@@ -23,7 +23,6 @@ logging.basicConfig(level=logging.INFO)
 async def on_message(message):
     if message.author.bot:
         return
-
     res = ping_pong.make_res(message.content)
     if res != "":
         logger.info(f"PingPong: {res}")
@@ -57,14 +56,14 @@ async def on_vc_many(member: discord.Member, channel: discord.channel):
     chid = vc_funcs.detect_ch_id(channel.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
-@bot.event
+@bot.event # 通話終了
 async def on_vc_end(channel: discord.channel):
     logger.info(f"VC_End: {channel.name} is ended.")
     emb = discord.Embed(title=f"{channel.name} の通話は終了しました")
     chid = vc_funcs.detect_ch_id(channel.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
-@bot.slash_command(guild_ids=[GUILD_ID], description="指定のユーザーに援護ピンを立てます。")
+@bot.slash_command(guild_ids=[GUILD_ID], description="指定のユーザーに援護ピンを立てます。") # 援護ピン
 async def engo(ctx, user : discord.User):
     msg = f"{user.mention}を援護！"
     logger.info(f"Slash_Engo: {msg}")

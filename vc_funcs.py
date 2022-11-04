@@ -16,6 +16,9 @@ def count_people(vc: discord.VoiceChannel):
     return len(vc.voice_states.keys())
 
 def detect_operation(bf:discord.VoiceState, af:discord.VoiceState):
+    # When voice state is updated, then return next operation.
+    # Return is "start", "end" or "many" normally.
+    # Return -1 when error happen.
     bf_cnt = count_people(bf.channel)
     af_cnt = count_people(af.channel)
 
@@ -33,6 +36,8 @@ def detect_operation(bf:discord.VoiceState, af:discord.VoiceState):
     return -1
 
 def detect_ch_id(chid: int):
+    # Return text channel id.
+    # When arg is Unite or Genshin voice channel id, return corresponding text channel id.
     if chid == UNITE_VC_ID:
         return UNITE_TX_ID
     if chid == GENSHIN_VC_ID:
