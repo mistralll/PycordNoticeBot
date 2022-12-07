@@ -20,6 +20,8 @@ def detect_operation(bf:discord.VoiceState, af:discord.VoiceState):
     if af_cnt != -1:
         if bf_cnt == -1 and af_cnt == 1:
             return "start"
+        if af_cnt == 1 and not(is_dif_ch):
+            return "start"
         if af_cnt > 3 and is_dif_ch and bf_cnt < af_cnt:
             return "many"
     if bf_cnt == 0:
