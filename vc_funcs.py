@@ -1,14 +1,5 @@
 import discord
 
-import os
-from dotenv import load_dotenv
-load_dotenv()
-NOTICE_CH_ID = int(os.environ['NOTICE_CH_ID'])
-UNITE_TX_ID = int(os.environ['UNITE_TX_ID'])
-UNITE_VC_ID = int(os.environ['UNITE_VC_ID'])
-GENSHIN_TX_ID = int(os.environ['GENSHIN_TX_ID'])
-GENSHIN_VC_ID = int(os.environ['GENSHIN_VC_ID'])
-
 def count_people(vc: discord.VoiceChannel):
     # Return how many people is in voice channel.
     # If voice channel is None, return -1.
