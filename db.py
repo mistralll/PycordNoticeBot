@@ -62,4 +62,11 @@ def delete_all_db_rows():
             cursor.execute(sql)
             connection.commit()
 
-add_notice_channel_id("mawa", "zoom")
+def change_or_add_notice_channel(voice_ch_id, text_ch_id):
+    prev = get_notice_channel_id(voice_ch_id)
+    if not prev:
+        add_notice_channel_id(voice_ch_id, text_ch_id)
+    else:
+        update_db(voice_ch_id, text_ch_id)
+
+        
