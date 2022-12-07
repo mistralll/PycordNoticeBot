@@ -4,11 +4,13 @@ import env
 import log
 import ping_pong
 import vc_funcs
+import db
 
-intents = discord.Intents.all()
-intents.members = True
+discord_intents = discord.Intents.all()
+discord_intents.members = True
 
-bot = discord.Bot(intents = intents)
+notice_channels = db.get_all_notice_channel_ids()
+bot = discord.Bot(intents = discord_intents)
 
 @bot.event
 async def on_message(message):
@@ -37,21 +39,21 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 async def on_vc_start(mem: discord.Member, ch: discord.channel):
     log.logger.info(f"VC_Start: {ch.name} is started.")
     emb = discord.Embed(title=f"{ch.name} で通話が開始されました！", description=f"{mem.display_name}")
-    chid = vc_funcs.detect_ch_id(ch.id)
+    chid = vc_funcs.detect_ch_id(notice_channels, ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event # 大人数参加
 async def on_vc_many(mem: discord.Member, ch: discord.channel):
     log.logger.info(f"VC_Many: {mem.display_name} is join to {ch.name}.")
     emb = discord.Embed(title=f"{ch.name} に {vc_funcs.count_people(ch)}人目の参加者がきました！", description=f"来た人: {mem.display_name}")
-    chid = vc_funcs.detect_ch_id(ch.id)
+    chid = vc_funcs.detect_ch_id(notice_channels, ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.event # 通話終了
 async def on_vc_end(ch: discord.channel):
     log.logger.info(f"VC_End: {ch.name} is ended.")
     emb = discord.Embed(title=f"{ch.name} の通話は終了しました")
-    chid = vc_funcs.detect_ch_id(ch.id)
+    chid = vc_funcs.detect_ch_id(notice_channels, ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
 
 @bot.slash_command(guild_ids=[env.GUILD_ID], description="指定のユーザーに援護ピンを立てます。") # 援護ピン
@@ -59,5 +61,34 @@ async def engo(ctx, user : discord.User):
     msg = f"{user.mention}を援護！"
     log.logger.info(f"Slash_Engo: {msg}")
     await ctx.respond(msg)
+
+@bot.slash_command(guildids=[env.GUILD_ID], description="通話開始通知を行うデフォルトのチャンネルを変更します。")
+async def change_default_notice_channel(ctx, text_ch:discord.TextChannel):
+    msg = f"デフォルトの通知先を{text_ch.name}に変更しました。"
+    await ctx.respond(msg)
+    db.change_or_add_notice_channel("default", str(text_ch.id))
+    global notice_channels
+    notice_channels = db.get_all_notice_channel_ids()
+    log.logger.info(f"Slash_change_default_notice_ch: {text_ch.name}")
+    
+
+@bot.slash_command(guildids=[env.GUILD_ID], description="ボイスチャンネルの通知先を個別に設定します。")
+async def change_notice_channel(ctx, voice_ch:discord.VoiceChannel, text_ch:discord.TextChannel):
+    msg = f"{voice_ch.name}の通知先を{text_ch.name}に変更しました。"
+    await ctx.respond(msg)
+    db.change_or_add_notice_channel(str(voice_ch.id), str(text_ch.id))
+    global notice_channels
+    notice_channels = db.get_all_notice_channel_ids()
+    log.logger.info(f"Slash_change_notice_ch: {text_ch.name} <- {voice_ch.name}")
+    
+
+@bot.slash_command(guildids=[env.GUILD_ID], description="ボイスチャンネルの通知先をデフォルトに戻します。")
+async def change_notice_ch_to_default(ctx, voice_ch:discord.VoiceChannel):
+    msg = f"{voice_ch.name}の通知先をデフォルトのチャンネルに変更しました。"
+    await ctx.respond(msg)
+    db.delete_db_row(str(voice_ch.id))
+    global notice_channels
+    notice_channels = db.get_all_notice_channel_ids()
+    log.logger.info(f"Slash_change_notice_ch_to_default: {voice_ch.name}")
 
 bot.run(env.DISCORD_BOT_TOKEN)

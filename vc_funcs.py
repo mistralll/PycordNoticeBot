@@ -35,11 +35,16 @@ def detect_operation(bf:discord.VoiceState, af:discord.VoiceState):
         return "end"
     return -1
 
-def detect_ch_id(chid: int):
-    # Return text channel id.
-    # When arg is Unite or Genshin voice channel id, return corresponding text channel id.
-    if chid == UNITE_VC_ID:
-        return UNITE_TX_ID
-    if chid == GENSHIN_VC_ID:
-        return GENSHIN_TX_ID
-    return NOTICE_CH_ID
+def detect_ch_id(list, chid: int):
+    tmp = -1
+    default = -1
+    for row in list:
+        if row[0] == "default":
+            default = row[1]
+        if row[0] == str(chid):
+            tmp = row[1]
+
+    if tmp != -1:
+        return tmp
+    else:
+        return default
