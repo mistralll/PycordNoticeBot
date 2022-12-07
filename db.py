@@ -1,15 +1,8 @@
 import psycopg2
-import os
-from dotenv import load_dotenv
-load_dotenv()
+import env
 
 def new_db_connection():
-    HOST = os.environ['DB_HOST']
-    USER = os.environ['DB_USER']
-    PASS = os.environ['DB_PASS']
-    NAME = os.environ['DB_NAME']
-    PORT = os.environ['DB_PORT']
-    connection = psycopg2.connect(host=HOST, user=USER, password=PASS, database=NAME, port=PORT)
+    connection = psycopg2.connect(host=env.HOST, user=env.USER, password=env.PASS, database=env.NAME, port=env.PORT)
     return connection
 
 def add_notice_channel_id(voice_ch_id, text_ch_id):
@@ -69,4 +62,3 @@ def change_or_add_notice_channel(voice_ch_id, text_ch_id):
     else:
         update_db(voice_ch_id, text_ch_id)
 
-        
