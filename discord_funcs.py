@@ -5,6 +5,7 @@ import log
 import ping_pong
 import vc_funcs
 import db
+import random_teaming
 
 discord_intents = discord.Intents.all()
 discord_intents.members = True
@@ -90,5 +91,14 @@ async def change_notice_ch_to_default(ctx, voice_ch:discord.VoiceChannel):
     global notice_channels
     notice_channels = db.get_all_notice_channel_ids()
     log.logger.info(f"Slash_change_notice_ch_to_default: {voice_ch.name}")
+
+@bot.slash_command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
+async def random(ctx, vc:discord.VoiceChannel, num: int):
+    msg = f"移動中..."
+    await ctx.respond(msg)
+    ch_a = bot.get_channel(int(1057118636529168384))
+    ch_b = bot.get_channel(int(1057119010812076032))
+    await random_teaming.move_random(vc, [ch_a, ch_b])
+    log.logger.info(f"Random teaming: {vc.name}")
 
 bot.run(env.DISCORD_BOT_TOKEN)
