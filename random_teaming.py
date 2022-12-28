@@ -33,6 +33,8 @@ async def get_or_create_category(ctx, name: str):
 
 async def delete_temp(ch: discord.channel, temp_cat: discord.CategoryChannel):
     # chがtemp_catに属している場合削除します。また、temp_catが空の場合カテゴリーも削除します。
+    if temp_cat is None:
+        return
     if is_temp_ch(ch, temp_cat) is True:
         await ch.delete()
     if len(temp_cat.channels) == 0:
