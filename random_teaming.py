@@ -26,3 +26,25 @@ async def get_or_create_category(ctx, name: str):
     if cat is None:
         cat = await create_category(ctx, name)
     return cat
+
+async def delete_temp(ch: discord.channel, temp_cat: discord.CategoryChannel):
+    if is_temp_ch(ch, temp_cat) is True:
+        await ch.delete()
+    if len(temp_cat.channels) == 0:
+        await temp_cat.delete()
+
+def is_temp_ch(ch: discord.channel, temp_cat: discord.CategoryChannel):
+    if ch is None:
+        return False
+    if ch.category_id == temp_cat.id:
+        return True
+    else:
+        return False
+
+async def create_temp_channels(ctx, name: str, num: int, cat: discord.CategoryChannel):
+    channels = []
+    for i in range(num):
+        title = name + "_" + str(i)
+        ch = await create_vc_in_category(ctx, title, cat)
+        channels.append(ch)
+    return channels
