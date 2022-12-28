@@ -100,8 +100,15 @@ async def change_notice_ch_to_default(ctx, voice_ch:discord.VoiceChannel):
 
 @bot.slash_command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
 async def random(ctx, vc:discord.VoiceChannel, num: int):
-    msg = f"{vc.name} を {num} 部屋にランダムに分けます。"
-    await ctx.respond(msg)
+    # error handling
+    mems = vc.members
+    if len(vc.members) < num:
+        msg = "参加者の人数より多くは分割できません。"
+        await ctx.respond(msg)
+        return
+    else:
+        msg = f"{vc.name} を {num} 部屋にランダムに分けます。"
+        await ctx.respond(msg)
     # Prepare Category
     cat = await random_teaming.get_or_create_category(ctx, temp_category_name)
     global temp_cat
