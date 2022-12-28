@@ -1,4 +1,5 @@
 import discord
+import random_teaming
 
 def count_people(vc: discord.VoiceChannel):
     # Return how many people is in voice channel.

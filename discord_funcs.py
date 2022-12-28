@@ -60,6 +60,7 @@ async def on_vc_end(ch: discord.channel):
     emb = discord.Embed(title=f"{ch.name} の通話は終了しました")
     chid = vc_funcs.detect_ch_id(notice_channels, ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
+    global temp_cat
     await random_teaming.delete_temp(ch, temp_cat)
 
 @bot.slash_command(guild_ids=[env.GUILD_ID], description="指定のユーザーに援護ピンを立てます。") # 援護ピン
@@ -101,10 +102,13 @@ async def change_notice_ch_to_default(ctx, voice_ch:discord.VoiceChannel):
 async def random(ctx, vc:discord.VoiceChannel, num: int):
     msg = f"{vc.name} を {num} 部屋にランダムに分けます。"
     await ctx.respond(msg)
+    # Prepare Category
     cat = await random_teaming.get_or_create_category(ctx, temp_category_name)
     global temp_cat
     temp_cat = cat
+    # Create voice channels
     channels = await random_teaming.create_temp_channels(ctx, vc.name, num, cat)
+    # Move people
     await random_teaming.move_random(vc, channels)
     log.logger.info(f"Random teaming: {vc.name}")
 

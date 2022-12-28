@@ -42,6 +42,9 @@ def is_temp_ch(ch: discord.channel, temp_cat: discord.CategoryChannel):
     # chがtemp_catに属しているか判定します。
     if ch is None:
         return False
+    if temp_cat is None:
+        return False
+    
     if ch.category_id == temp_cat.id:
         return True
     else:
