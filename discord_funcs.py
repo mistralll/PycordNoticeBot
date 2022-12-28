@@ -13,6 +13,13 @@ discord_intents.members = True
 notice_channels = db.get_all_notice_channel_ids()
 bot = discord.Bot(intents = discord_intents)
 
+temp_category_name = "temporary"
+
+@bot.event
+async def on_ready():
+    log.logger.info("Listening...")
+
+
 @bot.event
 async def on_message(message):
     if message.author.bot:
@@ -21,10 +28,6 @@ async def on_message(message):
     if res != "":
         log.logger.info(f"PingPong: {res}")
         await message.channel.send(res)
-    
-@bot.event
-async def on_ready():
-    log.logger.info("Listening...")
 
 @bot.event # 通話検知
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
@@ -56,6 +59,10 @@ async def on_vc_end(ch: discord.channel):
     emb = discord.Embed(title=f"{ch.name} の通話は終了しました")
     chid = vc_funcs.detect_ch_id(notice_channels, ch.id)
     await bot.get_channel(int(chid)).send(embed=emb)
+    
+    # temporary channel だった場合削除する
+    print(ch.category_id)
+
 
 @bot.slash_command(guild_ids=[env.GUILD_ID], description="指定のユーザーに援護ピンを立てます。") # 援護ピン
 async def engo(ctx, user : discord.User):
@@ -100,5 +107,11 @@ async def random(ctx, vc:discord.VoiceChannel, num: int):
     ch_b = bot.get_channel(int(1057119010812076032))
     await random_teaming.move_random(vc, [ch_a, ch_b])
     log.logger.info(f"Random teaming: {vc.name}")
+
+@bot.slash_command(guildids=[env.GUILD_ID], description="dev - 一時的なボイスチャンネルを作ります。")
+async def make_temp_vc(ctx, name:str):
+    cat = await random_teaming.get_or_create_category(ctx, temp_category_name)
+    ch  = await random_teaming.create_vc_in_category(ctx, name, cat)
+    log.logger.info(f"create ch {ch.name} on {cat.name}")
 
 bot.run(env.DISCORD_BOT_TOKEN)
