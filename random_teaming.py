@@ -1,5 +1,6 @@
 import discord
 import random
+import alphabet_index
 
 async def move_random(channel_move_from: discord.VoiceChannel, channels_move_to: list[discord.VoiceChannel]):
     # 第一引数のVoiceChannelに参加しているメンバーをランダムでmove_toのボイスチャンネルに均等に分配します。
@@ -56,7 +57,10 @@ async def create_temp_channels(ctx, name: str, num: int, cat: discord.CategoryCh
     # 名前と数、所属するカテゴリーを指定してチャンネルを作ります。
     channels = []
     for i in range(num):
-        title = name + "_" + str(i)
+        title = name + "_" + alphabet_index.alphabet_index(i)
         ch = await create_vc_in_category(ctx, title, cat)
         channels.append(ch)
     return channels
+
+
+        
