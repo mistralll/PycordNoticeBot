@@ -123,4 +123,12 @@ async def random(ctx, vc:discord.VoiceChannel, num: int):
     await random_teaming.move_random(vc, channels)
     log.logger.info(f"Random teaming: {vc.name}")
 
+@bot.slash_command(guildids=[env.GUILD_ID], description="ボイスチャンネルに参加している全員を移動させます。")
+async def move_all(ctx, fm:discord.VoiceChannel, to:discord.VoiceChannel):
+    members = fm.members
+    for mem in members:
+        await mem.move_to(to)
+    msg = f"{fm.name} の参加者を {to.name} に移動させました。"
+    await ctx.respond(msg)
+
 bot.run(env.DISCORD_BOT_TOKEN)
