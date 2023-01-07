@@ -131,4 +131,13 @@ async def move_all(ctx, fm:discord.VoiceChannel, to:discord.VoiceChannel):
     for mem in members:
         await mem.move_to(to)
 
+@bot.slash_command(guildids=[env.GUILD_ID], description="分けたチームを集合させます。")
+async def assemble_in(ctx, vc:discord.VoiceChannel):
+    msg = f"{vc.name} に集合させます。"
+    await ctx.respond(msg)
+    cat = discord.utils.get(ctx.guild.categories, name=temp_category_name)
+    for ch in cat.voice_channels:
+        for mem in ch.members:
+            await mem.move_to(vc)
+
 bot.run(env.DISCORD_BOT_TOKEN)
