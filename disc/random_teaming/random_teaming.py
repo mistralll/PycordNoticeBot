@@ -5,6 +5,7 @@ import discord
 import disc.bot as bot
 import libs.env as env
 import disc.random_teaming.funcs as funcs
+import disc.libs.voice_channel as lib
 
 @bot.bot.slash_command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
 async def random(ctx, vc:discord.VoiceChannel, num: int):
@@ -24,7 +25,7 @@ async def random(ctx, vc:discord.VoiceChannel, num: int):
     # Create voice channels
     channels = await funcs.create_temp_channels(ctx, vc.name, num, cat)
     # Set notice channel
-    notice_ch = vc_notice.detect_ch_id(bot.notice_channels, vc.id)
+    notice_ch = lib.detect_ch_id(bot.notice_channels, vc.id)
     for ch in channels:
         bot.notice_channels.append([str(ch.id), notice_ch])
     # Move people
