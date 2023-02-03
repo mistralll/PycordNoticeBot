@@ -30,7 +30,7 @@ import disc.move_all.move_all
 import disc.notice_channel.notice_channel
 import disc.on_ready.on_ready
 import disc.ping_pong.ping_pong
-import disc.randm_teaming.randm_teaming
+import disc.random_teaming.random_teaming
 import disc.vc_notice.voice_state
 
 # Run

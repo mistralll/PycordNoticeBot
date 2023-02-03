@@ -4,7 +4,7 @@ import disc.bot as bot
 
 import discord
 import disc.vc_notice as vc_funcs
-import disc.randm_teaming as random_teaming
+import disc.random_teaming as random_teaming
 
 @bot.bot.event # 通話検知
 async def on_voice_state_update(member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
