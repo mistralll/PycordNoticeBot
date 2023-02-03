@@ -4,7 +4,7 @@ sys.path.append('../')
 import discord
 import disc.bot as bot
 import libs.env as env
-import disc.randm_teaming.funcs as funcs
+import disc.random_teaming.funcs as funcs
 
 @bot.bot.slash_command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
 async def random(ctx, vc:discord.VoiceChannel, num: int):

@@ -3,7 +3,7 @@ sys.path.append('../')
 
 import discord
 import random
-import disc.randm_teaming.alphabet_index as alphabet_index
+import disc.random_teaming.alphabet_index as alphabet_index
 
 async def move_random(channel_move_from: discord.VoiceChannel, channels_move_to: list[discord.VoiceChannel]):
     # 第一引数のVoiceChannelに参加しているメンバーをランダムでmove_toのボイスチャンネルに均等に分配します。
