@@ -1,5 +1,8 @@
+import sys
+sys.path.append('../')
+
 import psycopg2
-import env
+import libs.env as env
 
 def new_db_connection():
     connection = psycopg2.connect(host=env.HOST, user=env.USER, password=env.PASS, database=env.NAME, port=env.PORT)
