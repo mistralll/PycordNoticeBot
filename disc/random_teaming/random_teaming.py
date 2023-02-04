@@ -20,8 +20,7 @@ async def random(ctx, vc:discord.VoiceChannel, num: int):
         await ctx.respond(msg)
     # Prepare Category
     cat = await funcs.get_or_create_category(ctx, bot.temp_category_name)
-    global temp_cat
-    temp_cat = cat
+    bot.temp_cat = cat
     # Create voice channels
     channels = await funcs.create_temp_channels(ctx, vc.name, num, cat)
     # Set notice channel
