@@ -1,3 +1,17 @@
+import sys
+sys.path.append('../')
+
+import disc.bot as bot
+
+@bot.bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+    res = make_res(message.content)
+    if res != "":
+        bot.log(f"PingPong: {res}")
+        await message.channel.send(res)
+
 def make_res(msg):
     res = ""
 
