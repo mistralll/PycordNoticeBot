@@ -4,6 +4,7 @@ sys.path.append('../')
 import discord
 import random
 import disc.random_teaming.alphabet_index as alphabet_index
+import disc.bot as bot
 
 async def move_random(channel_move_from: discord.VoiceChannel, channels_move_to: list[discord.VoiceChannel]):
     # 第一引数のVoiceChannelに参加しているメンバーをランダムでmove_toのボイスチャンネルに均等に分配します。
@@ -38,11 +39,14 @@ async def get_or_create_category(ctx, name: str):
 async def delete_temp(ch: discord.channel, temp_cat: discord.CategoryChannel):
     # chがtemp_catに属している場合削除します。また、temp_catが空の場合カテゴリーも削除します。
     if temp_cat is None:
+        bot.log("delete_temp: temp cat is None.")
         return
     if is_temp_ch(ch, temp_cat) is True:
         await ch.delete()
+        bot.log(f"delete_temp: {ch.name} is deleted.")
     if len(temp_cat.channels) == 0:
         await temp_cat.delete()
+        bot.log("delete_temp: temp category is deleted.")
 
 def is_temp_ch(ch: discord.channel, temp_cat: discord.CategoryChannel):
     # chがtemp_catに属しているか判定します。
