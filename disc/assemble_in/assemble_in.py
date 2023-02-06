@@ -12,7 +12,7 @@ async def assemble_in(ctx, to:discord.VoiceChannel):
     for vc in bot.temp_cat.voice_channels:
         for mem in vc.members:
             await mem.move_to(to)
-        rand.delete_temp(vc, bot.temp_cat)        
+        await rand.delete_temp(vc, bot.temp_cat)    
 
     bot.log(f"assemble_in to {to.name} is done.")
 
