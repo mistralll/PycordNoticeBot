@@ -10,7 +10,6 @@ import disc.libs.voice_channel as lib
 @bot.bot.slash_command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
 async def random(ctx, vc:discord.VoiceChannel, num: int):
     # error handling
-    mems = vc.members
     if len(vc.members) < num:
         msg = "参加者の人数より多くは分割できません。"
         await ctx.respond(msg)

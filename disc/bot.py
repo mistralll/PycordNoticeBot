@@ -25,6 +25,7 @@ temp_category_name = "temporary"
 temp_cat = None
 
 # Set events
+import disc.assemble_in.assemble_in
 import disc.engo_pin.engo_pin
 import disc.move_all.move_all
 import disc.notice_channel.notice_channel
