@@ -22,10 +22,7 @@ async def random(ctx, vc:discord.VoiceChannel, num: int):
     bot.temp_cat = cat
     # Create voice channels
     channels = await funcs.create_temp_channels(ctx, vc.name, num, cat)
-    # Set notice channel
-    notice_ch = lib.detect_ch_id(bot.notice_channels, vc.id)
-    for ch in channels:
-        bot.notice_channels.append([str(ch.id), notice_ch])
+
     # Move people
     await funcs.move_random(vc, channels)
     bot.log(f"Random teaming: {vc.name}")
