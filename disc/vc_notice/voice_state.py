@@ -39,4 +39,3 @@ async def on_vc_end(ch: discord.channel):
     await bot.bot.get_channel(int(chid)).send(embed=emb)
     await random_teaming.delete_temp(ch, bot.temp_cat)
 
-    
