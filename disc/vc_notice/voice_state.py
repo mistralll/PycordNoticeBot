@@ -39,7 +39,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 # 通話開始
 async def on_vc_start(mem: discord.Member, ch: discord.channel):
     bot.log(f"VC_Start: {ch.name} is started.")
-    emb = discord.Embed(title=f"{ch.name} で通話が開始されました！", description=f"{mem.nick}")
+    emb = discord.Embed(title=f"{ch.name} で通話が開始されました！", description=f"{mem.global_name}")
     chid = vc.detect_ch_id(bot.notice_channels, ch.id)
     await bot.bot.get_channel(int(chid)).send(embed=emb)
 
@@ -55,6 +55,6 @@ async def on_vc_end(ch: discord.channel):
 # 大人数の参加
 async def on_vc_many(mem: discord.Member, ch: discord.channel):
     bot.log(f"VC_Many: {mem.nick} is join to {ch.name}.")
-    emb = discord.Embed(title=f"{ch.name} に {vc.count_people(ch)}人目の参加者がきました！", description=f"来た人: {mem.nick}")
+    emb = discord.Embed(title=f"{ch.name} に {vc.count_people(ch)}人目の参加者がきました！", description=f"来た人: {mem.global_name}")
     chid = vc.detect_ch_id(bot.notice_channels, ch.id)
     await bot.bot.get_channel(int(chid)).send(embed=emb)

@@ -7,7 +7,7 @@ import libs.env as env
 import disc.random_teaming.funcs as funcs
 import disc.libs.voice_channel as lib
 
-@bot.bot.slash_command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
+@bot.bot.command(guildids=[env.GUILD_ID], description="ランダムでチーム分けします。")
 async def random(ctx, vc:discord.VoiceChannel, num: int):
     # error handling
     if len(vc.members) < num:
