@@ -2,6 +2,7 @@ import sys
 sys.path.append('../')
 
 import discord
+from discord.ext import commands
 
 # Load env
 import libs.env as env
@@ -19,7 +20,7 @@ def log(msg):
 dc_intents = discord.Intents.all()
 dc_intents.members = True
 
-bot = discord.Bot(intents = dc_intents)
+bot = commands.Bot(command_prefix='?', description="mawa_bot", intents=dc_intents)
 
 temp_category_name = "temporary"
 temp_cat = None

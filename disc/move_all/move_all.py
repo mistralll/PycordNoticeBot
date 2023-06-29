@@ -5,7 +5,7 @@ import discord
 import disc.bot as bot
 import libs.env as env
 
-@bot.bot.slash_command(guildids=[env.GUILD_ID], description="ボイスチャンネルに参加している全員を移動させます。")
+@bot.bot.command(guildids=[env.GUILD_ID], description="ボイスチャンネルに参加している全員を移動させます。")
 async def move_all(ctx, fm:discord.VoiceChannel, to:discord.VoiceChannel):
     msg = f"{fm.name} の参加者を {to.name} に移動させます。"
     await ctx.respond(msg)
